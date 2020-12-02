@@ -1,0 +1,9 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: build/Dockerfile
+    volumes:
+      - .:/var/www/
+    network_mode: "host"
