@@ -2,6 +2,7 @@ from behave import *
 from hamcrest import *
 
 from file_system.file_system import FileSystem
+from file_system.real_file_system import RealFileSystem
 
 use_step_matcher("re")
 
@@ -21,4 +22,15 @@ def call_function(context, function):
 
 @given("I have (?P<no_of_dirs>.*) directories and (?P<no_of_files>.*) files in my root directory")
 def prepare_files_and_dirs(context, no_of_dirs, no_of_files):
-    raise NotImplementedError(u'STEP: Given I have no directories and no files in my root directory')
+    real_file_system: RealFileSystem = context.real_file_system
+    for count in range(int(no_of_files)):
+        real_file_system.create_file('/')
+    for count in range(int(no_of_dirs)):
+        real_file_system.create_dir('/')
+
+
+@then("I should see (?P<no_of_files>.*) file(?:s)? and (?P<no_of_dirs>.*) director(?:y|ies)?")
+def assert_files_and_dirs(context, no_of_files, no_of_dirs):
+    real_file_system: RealFileSystem = context.real_file_system
+    assert_that(int(no_of_files), is_(equal_to(len(real_file_system.get_files('/')))))
+    assert_that(int(no_of_dirs), is_(equal_to(len(real_file_system.get_directories('/')))))

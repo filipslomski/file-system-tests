@@ -9,6 +9,12 @@ class RealFileSystem:
     def get_directories(self, path: str):
         pass  # use requests library to get the actual list of directories for a path
 
+    def create_file(self, path: str):
+        pass
+
+    def create_dir(self, path: str):
+        pass
+
     def pwd(self):
         pass  # use requests library to get the current working directory for the real file system
 
